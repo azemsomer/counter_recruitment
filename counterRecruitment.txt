@@ -1,0 +1,69 @@
+Counter recruitment
+
+Agressive methods used by recruiters are a major anoyance for employers and employees alike. Unsolicited contacts initiated by recruiters are more often than not disruptive for ordinary business operation and causes much irritation by both management and staff.
+
+Counter recruitment refers to all strategies and methods to reduce the damage recruiters can do to one's business. In this document I will present a couple of possible counter recruitment solutions. However, this is pretty much a work in progress.
+
+#1 Mail filtering
+
+Many organizations have a mail system intended for internal use only, i.e. for staff members to contact each other but not to be contacted by outsiders. However, since most of this mail addresses follow the <firstname>.<lastname>@<domain> format, recruiters are able to guess an employee's work mail address.
+
+Fortunately, there is an easy method businesses can employ to prevent recruiters to contact employees on their work mail: static mail filtering.
+
+Let's assume you have a business: mybusiness and the associated domain mybusiness.com. You want that, say, alice@mybusiness.com can send mail to bob@mybusiness.com but not that carol@evilrecruitment.com can send mail to either Alice or Bob.
+
+What you need is a mail filter utility like procmail and a mail filter script language such as sieve. You will need to install a script on your mail server, like the following:
+
+	if address :is "from" "*@mybusiness.com"{
+		keep;
+	}
+	else{
+		discard;
+	}
+
+The if-else statement above will take care that all will from @mybusiness.com addresses will be delivered (the * is a wildcard that is an stand-in for all possible values, e.g. alice or bob) as intended. However, all mail send from external addresses will be silently deleted (discard) by the mail server.
+
+This way any mail send by recruiters will not be received by any staff member and hence prevents any irritation or inconvenience at the side of the would-be recipient. Meanwhile recruiters will wonder why they do not get any response on their mails, but that is not your concern.
+
+However, as there might be a few external contacts (such as established clients and suppliers), who should been able to mail to certain employees, a white list might be required. All established, and hence approved, external contact should be put in a white list. This would give a code like this:
+
+	if address :is "from" "*@mybusiness.com"{
+		keep;
+	elsif address :is "from" whitelist{ //I am not sure whether sieve does support this syntax
+		keep;
+	}
+	else{
+		discard;
+	}
+
+Preferentially the whitelist should be stored in a separate file, which could be modified by a specially written script:
+
+	update-script --> whitelist-file --> mail-filter-script
+
+Only the update-script should have write permission to the whitelist-file and the mail-filter should have read-only permission. (This could be arranged by the whitelist-file's ACL.)
+
+Non-established external contacts should typically use a ticket system to contact the organisation, this system would subsequently take care that the message is delivered to the appropriate employee.
+
+#2 Work mobile phones
+
+Many, if not most, employers provide mobile phones to their employees. Unfortunately, recruiters are too often able to get hold of these numbers. The good news is that there are plenty of block apps available. But most of those, require the user to create a black list of numbers to be blocked.
+
+However, since the set of people with you want to have contact is usually quite small, it makes sense to have a reverted block app, i.e. allow only known contacts to be accepted and reject all unknown callers.
+
+Ideally users should be able to synchronise this reverted block app with some contact manager (for instance Google Contacts).
+
+The service desk of an organisation should handle all incoming calls from new contacts and direct it to the appropriate employee when needed. This brings us to the next point.
+
+#3 Work landline
+
+Landline telephone numbers are popular among recruiters, as this are typically public information and hence can be obtained with no serious effort. However, calling people at their workplace is considered as very impolite by both employers and employee alike.
+
+Too often recruiters call a service desk with a made up excuse to speak with a certain employee. In order to thwart recruiters, I recommend the following steps:
+
+Your first line of defense against recruiters is a voice menu. The menu options should be designed in such a way, that callers with a legetimate reason can easily choose the right option, but which is too confusing for recruiters and hence cause them to simply hang up.
+
+However, if a recruiter still manages to get to the service desk, you need well-trained staff members to deal with these people. Service desk employees should be made aware of the existence of recruiters and should be learned the signs to recognize them.
+
+One thing the service desk might do, if a recruiter asks for, say, Alice, is to tell that she is busy at the moment but they will inform her and that she will call back in, for instance, half an hour. Then the service desk should ask Alice, whether she knows the caller or not.
+
+
